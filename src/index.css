@@ -1,0 +1,226 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+==========================================================================
+【AI HANDOVER NOTE】
+1. DESIGN PHILOSOPHY:
+   - 主設計理念：Velocity Aesthetics（速度美學）融合 Carbon Fiber Physicality（碳纖物理質感）
+   - 視覺風格：Dark Premium with Neon Accents - 深色高端基調配搭螢光破風色，營造專業賽道氛圍
+   - Rim-light 技術應用於產品卡片邊緣，模擬碳纖維在光線下的反射質感
+   - 採用 Bento surfaces 模組化佈局，清晰區隔產品分類（爬坡/破風/耐力）
+   - 為什麼選擇這種風格：公路車代理商需要傳達「專業性能」與「速度激情」，深色背景突出產品細節，螢光色強調動態感，符合目標受眾（28歲三鐵愛好者、升級車手）對高端裝備的期待
+
+2. TYPOGRAPHY:
+   - Sans 字體：Rajdhani - 幾何無襯線字體，具備賽車儀表板的科技感與速度感，筆畫緊湊有力，適合展示性能數據與規格參數；Noto Sans TC 確保繁體中文（香港用語）的完美呈現
+   - Mono 字體：JetBrains Mono - 用於展示精確的車架幾何數據（Geometry）、重量規格（700g）、套件級別等技術資訊，等寬字體確保數字對齊的專業感
+   - 字重策略：標題使用 700-900 bold 展現力量感，正文 400-500 保持可讀性，數據標籤 600 medium 突出關鍵資訊
+
+3. COLOR SYSTEM:
+   - 品牌主色：--brand 採用 Hue 10（破風紅）- 象徵速度、激情與競技精神，呼應「破風型」產品線的核心賣點
+   - --brand 映射邏輯：
+     * --primary: 破風紅，用於 CTA 按鈕（立即預約試車、查看經銷網絡）
+     * --accent: 螢光橙（Hue 25），用於 hover 狀態與次要強調（新品標籤、促銷資訊）
+     * --ring: 高亮度紅色，focus 狀態模擬賽道警示燈效果
+   - 語義色設計：
+     * success (Hue 150 綠): 用於「現貨供應」、「預約成功」等正向回饋
+     * warning (Hue 45 橙黃): 用於「限量車款」、「尺寸建議」等提示資訊
+     * destructive (Hue 0 深紅): 用於「售罄」、「刪除比較項目」等操作
+   - 深色模式為主（Dark-first strategy）：background 亮度 0.08 模擬碳纖維深邃質感，foreground 0.92 確保規格文字清晰可讀
+   - Light mode 保留給列印友善的規格表與經銷商地圖頁面
+
+4. USAGE GUIDE:
+   - 佈局類型：Dashboard full-width with Bento grid - 首頁採用全寬 Hero section 展示旗艦車款動態視覺，產品分類頁使用 3-column Bento cards（爬坡/破風/耐力），經銷網絡頁整合 Google Maps API
+   - 推薦特效：
+     * backdrop-blur(12px) 用於 Popover 導航選單與產品快速預覽 modal，營造毛玻璃質感
+     * rim-light effect（box-shadow with --accent color）應用於產品卡片 hover 狀態，模擬碳纖維邊緣反光
+     * Gradient overlays 用於 Hero section，從 background 漸變至 transparent，確保白色標題文字可讀性
+   - 互動設計規則：
+     * 所有 CTA 按鈕必須使用 --primary 配搭 scale(1.02) transform on hover
+     * 產品卡片 hover 時顯示 rim-light + 輕微上浮動畫（translateY(-4px)）
+     * 車架幾何數據表格使用 --muted background 與 --border 分隔線，確保數字易讀
+   - 響應式策略：Mobile-first，斷點 768px（平板）/ 1024px（桌面），產品網格在手機為 1-column，平板 2-column，桌面 3-column
+   - 專案特定規則：
+     * 產品圖片必須使用深色背景（--card）襯托，避免白底影響碳纖質感展示
+     * 規格標籤（重量/材質/套件）使用 --secondary background + --secondary-foreground，與產品描述文字區隔
+     * 經銷商地圖 marker 使用 --primary 色確保辨識度
+     * 預約表單 input focus 狀態使用 --ring 色搭配 2px 外框，提升可操作性回饋
+==========================================================================
+*/
+
+:root {
+  /* Typography */
+  --font-sans: 'Rajdhani', 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Noto Sans TC', monospace;
+  
+  /* Radius */
+  --radius: 0.5rem;
+
+  /* Core UI Tokens */
+  --background: oklch(0.98 0.005 280);
+  --foreground: oklch(0.15 0.02 280);
+  --card: oklch(0.99 0.003 280);
+  --card-foreground: oklch(0.15 0.02 280);
+  --popover: oklch(0.99 0.003 280);
+  --popover-foreground: oklch(0.15 0.02 280);
+  --primary: oklch(0.52 0.22 10);
+  --primary-foreground: oklch(0.98 0.005 10);
+  --secondary: oklch(0.92 0.01 280);
+  --secondary-foreground: oklch(0.25 0.02 280);
+  --muted: oklch(0.95 0.008 280);
+  --muted-foreground: oklch(0.48 0.015 280);
+  --accent: oklch(0.65 0.18 25);
+  --accent-foreground: oklch(0.98 0.005 25);
+  --destructive: oklch(0.55 0.22 15);
+  --destructive-foreground: oklch(0.98 0.005 15);
+  --border: oklch(0.88 0.01 280);
+  --input: oklch(0.88 0.01 280);
+  --ring: oklch(0.58 0.24 10);
+  
+  /* Chart Tokens */
+  --chart-1: oklch(0.52 0.22 10);
+  --chart-2: oklch(0.65 0.18 25);
+  --chart-3: oklch(0.45 0.15 280);
+  --chart-4: oklch(0.58 0.12 150);
+  --chart-5: oklch(0.62 0.16 45);
+  
+  /* Sidebar Tokens */
+  --sidebar: oklch(0.97 0.005 280);
+  --sidebar-foreground: oklch(0.25 0.02 280);
+  --sidebar-primary: oklch(0.52 0.22 10);
+  --sidebar-primary-foreground: oklch(0.98 0.005 10);
+  --sidebar-accent: oklch(0.92 0.01 280);
+  --sidebar-accent-foreground: oklch(0.25 0.02 280);
+  --sidebar-border: oklch(0.88 0.01 280);
+  --sidebar-ring: oklch(0.58 0.24 10);
+}
+
+.dark {
+  --background: oklch(0.08 0.015 280);
+  --foreground: oklch(0.92 0.01 280);
+  --card: oklch(0.12 0.018 280);
+  --card-foreground: oklch(0.92 0.01 280);
+  --popover: oklch(0.10 0.016 280);
+  --popover-foreground: oklch(0.92 0.01 280);
+  --primary: oklch(0.58 0.24 10);
+  --primary-foreground: oklch(0.08 0.015 10);
+  --secondary: oklch(0.18 0.02 280);
+  --secondary-foreground: oklch(0.88 0.012 280);
+  --muted: oklch(0.16 0.018 280);
+  --muted-foreground: oklch(0.62 0.015 280);
+  --accent: oklch(0.68 0.20 25);
+  --accent-foreground: oklch(0.08 0.015 25);
+  --destructive: oklch(0.60 0.24 15);
+  --destructive-foreground: oklch(0.95 0.008 15);
+  --border: oklch(0.22 0.02 280);
+  --input: oklch(0.22 0.02 280);
+  --ring: oklch(0.65 0.26 10);
+  
+  /* Chart Tokens */
+  --chart-1: oklch(0.58 0.24 10);
+  --chart-2: oklch(0.68 0.20 25);
+  --chart-3: oklch(0.55 0.18 280);
+  --chart-4: oklch(0.62 0.16 150);
+  --chart-5: oklch(0.65 0.18 45);
+  
+  /* Sidebar Tokens */
+  --sidebar: oklch(0.10 0.016 280);
+  --sidebar-foreground: oklch(0.88 0.012 280);
+  --sidebar-primary: oklch(0.58 0.24 10);
+  --sidebar-primary-foreground: oklch(0.08 0.015 10);
+  --sidebar-accent: oklch(0.18 0.02 280);
+  --sidebar-accent-foreground: oklch(0.88 0.012 280);
+  --sidebar-border: oklch(0.22 0.02 280);
+  --sidebar-ring: oklch(0.65 0.26 10);
+}
+
+@theme inline {
+  /* Shadcn Core Mapping */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Charts Mapping */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Sidebar Mapping */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Typography */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans min-h-screen;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  code, pre {
+    @apply font-mono;
+  }
+
+  ::selection {
+    @apply bg-primary/20 text-primary;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/40;
+  }
+}
