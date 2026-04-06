@@ -32,6 +32,8 @@ npm install @stripe/stripe-js @stripe/react-stripe-js
 import { Elements } from '@stripe/react-stripe-js';
 import { stripePromise, CheckoutForm } from './stripe/CheckoutForm';
 
+{% raw %}
+```jsx
 function App() {
   return (
     <Elements stripe={stripePromise}>
@@ -56,6 +58,7 @@ function App() {
   );
 }
 ```
+{% endraw %}
 
 ## 🔧 Component Description
 
